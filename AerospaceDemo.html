@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo Aerospace — Aerial Intelligence & Services</title>
+  <meta name="description" content="Demo Aerospace - drone inspections, LiDAR, training and products. A static demo site inspired by Volatus Aerospace." />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f7f9fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #0f5fff; /* blue */
+      --accent-2: #0b73d9;
+      --max-width: 1100px;
+      --radius: 12px;
+      --glass: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter",system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,var(--bg),#eef3fb);
+      color:#0b1220;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    /* Layout container */
+    .wrap{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:28px;
+    }
+
+    /* Header */
+    header.site-header{
+      background:transparent;
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter: blur(6px);
+      padding:10px 18px;
+    }
+    .nav-inner{
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+    }
+    .logo {
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      display:inline-grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:white;
+      font-weight:800;
+      font-size:18px;
+      box-shadow:0 6px 18px rgba(11,39,120,0.12);
+    }
+    .brand h1{font-size:16px;margin:0}
+    nav.primary{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    nav.primary a{
+      color:rgba(11,17,32,0.85);
+      text-decoration:none;
+      font-weight:600;
+      font-size:15px;
+      padding:8px 6px;
+      border-radius:8px;
+    }
+    nav.primary a:hover{background:rgba(11,17,32,0.04)}
+
+    /* Dropdown */
+    .dropdown{position:relative}
+    .dropdown .drop-toggle{cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+    .dropdown-menu{
+      position:absolute;
+      left:0;
+      top:calc(100% + 10px);
+      background:var(--card);
+      padding:10px;
+      border-radius:10px;
+      box-shadow:0 8px 30px rgba(11,17,32,0.08);
+      min-width:220px;
+      display:none;
+      flex-direction:column;
+      gap:8px;
+    }
+    .dropdown-menu a{display:block;padding:8px;border-radius:8px;color:var(--muted);text-decoration:none}
+    .dropdown-menu a:hover{background:rgba(11,17,32,0.03);color:inherit}
+
+    /* CTA */
+    .cta{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      padding:8px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:0 8px 24px rgba(11,39,120,0.12);
+    }
+
+    /* Mobile */
+    .burger{
+      display:none;
+      background:transparent;
+      border:0;
+      padding:8px;
+      border-radius:8px;
+    }
+    .mobile-menu{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(8,12,20,0.4);
+      z-index:80;
+      padding:48px 18px;
+    }
+    .mobile-menu .panel{
+      background:var(--card);
+      border-radius:12px;
+      max-width:420px;
+      margin:0 auto;
+      padding:18px;
+      box-shadow:0 30px 80px rgba(11,17,32,0.2);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .mobile-menu a{color:#0b1220;text-decoration:none;padding:10px;border-radius:8px}
+
+    /* Hero */
+    .hero{
+      margin-top:26px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.9));
+      padding:36px;
+      border-radius:16px;
+      display:flex;
+      gap:22px;
+      align-items:center;
+      box-shadow:0 20px 60px rgba(13,30,70,0.06);
+    }
+    .hero-left{flex:1;min-width:260px}
+    .hero h2{margin:0;font-size:28px}
+    .hero p{color:var(--muted);margin:12px 0 18px}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-visual{
+      width:380px;
+      height:220px;
+      border-radius:12px;
+      background-image:url("https://images.unsplash.com/photo-1505685296765-3a2736de412f?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=3a9c5f56a9f1e9be4a1c1f3b5a5b2def");
+      background-size:cover;
+      background-position:center;
+      box-shadow:0 18px 50px rgba(11,17,32,0.08);
+    }
+
+    /* Cards grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+    .card{
+      background:var(--card);
+      padding:18px;border-radius:12px;
+      box-shadow:0 8px 24px rgba(11,17,32,0.04);
+    }
+    .card h3{margin:0 0 8px;font-size:16px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Sections */
+    section{margin-top:36px}
+    section .section-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    section h3.title{margin:0;font-size:18px}
+
+    /* Two-column */
+    .cols{display:grid;grid-template-columns:1fr 360px;gap:20px}
+
+    /* Footer */
+    footer.site-footer{
+      margin-top:48px;padding:28px;background:transparent;
+      color:var(--muted);
+    }
+    .footer-inner{display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start}
+    .footer-col{min-width:180px}
+    .socials{display:flex;gap:10px;margin-top:8px}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Contact form */
+    .contact-card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 10px 30px rgba(11,17,32,0.04)}
+    .form-row{display:flex;gap:8px}
+    input,textarea,select{
+      width:100%;
+      padding:10px;border-radius:8px;border:1px solid rgba(11,17,32,0.06);
+      font-family:inherit;
+      font-size:14px;
+    }
+    textarea{min-height:120px;resize:vertical}
+    button.primary{
+      border:0;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700;
+      cursor:pointer;
+    }
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .hero-visual{display:none}
+      .cols{grid-template-columns:1fr}
+    }
+    @media (max-width:720px){
+      nav.primary{display:none}
+      .burger{display:inline-flex}
+      .grid{grid-template-columns:1fr}
+      .brand h1{font-size:15px}
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="site-header" aria-label="Main header">
+    <div class="nav-inner">
+      <a class="brand" href="#home" data-nav>
+        <div class="logo" aria-hidden="true">DA</div>
+        <div>
+          <h1>Demo Aerospace</h1>
+          <div class="small muted">Aerial intelligence & services</div>
+        </div>
+      </a>
+
+      <nav class="primary" role="navigation" aria-label="Primary navigation">
+        <div class="dropdown" id="servicesDrop">
+          <div class="drop-toggle" tabindex="0">Services ▾</div>
+          <div class="dropdown-menu" aria-hidden="true">
+            <a href="#services" data-nav data-sub="inspections">Drone Inspections</a>
+            <a href="#services" data-nav data-sub="lidar">LiDAR Solutions</a>
+            <a href="#services" data-nav data-sub="aviation">Aviation & Surveillance</a>
+          </div>
+        </div>
+
+        <div class="dropdown" id="industriesDrop">
+          <div class="drop-toggle" tabindex="0">Industries ▾</div>
+          <div class="dropdown-menu" aria-hidden="true">
+            <a href="#industries" data-nav data-sub="energy">Energy & Utilities</a>
+            <a href="#industries" data-nav data-sub="construction">Construction & Infrastructure</a>
+            <a href="#industries" data-nav data-sub="public">Public Safety</a>
+            <a href="#industries" data-nav data-sub="agri">Agriculture</a>
+          </div>
+        </div>
+
+        <a href="#training" data-nav>Training</a>
+        <a href="#products" data-nav>Products</a>
+        <a href="#contact" data-nav>Contact</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:12px">
+        <a class="cta" href="#contact" data-nav>Request Quote</a>
+        <button class="burger" id="burgerBtn" aria-label="Open menu">
+          <svg width="22" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="Mobile menu">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="logo" style="width:40px;height:40px">DA</div>
+          <div>
+            <div style="font-weight:700">Demo Aerospace</div>
+            <div class="small muted">Aerial intelligence</div>
+          </div>
+        </div>
+        <button id="mobileClose" aria-label="Close menu" style="border:0;background:transparent;font-weight:700;font-size:18px">✕</button>
+      </div>
+
+      <nav style="margin-top:12px;display:flex;flex-direction:column;gap:6px">
+        <a href="#home" data-nav>Home</a>
+        <a href="#services" data-nav>Services</a>
+        <a href="#industries" data-nav>Industries</a>
+        <a href="#training" data-nav>Training</a>
+        <a href="#products" data-nav>Products</a>
+        <a href="#contact" data-nav>Contact</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Page content -->
+  <main class="wrap" id="home">
+
+    <!-- HERO -->
+    <section class="hero" id="section-home" tabindex="-1" aria-labelledby="home-title">
+      <div class="hero-left">
+        <h2 id="home-title">The sky is not the limit — it is where we begin</h2>
+        <p>
+          Demo Aerospace provides enterprise drone inspections, LiDAR surveys, and aviation services for energy, construction, public safety and more. This is a static demo with placeholder content.
+        </p>
+        <div class="hero-cta">
+          <a class="cta" href="#contact" data-nav>Request a Quote</a>
+          <a href="#services" data-nav style="padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(11,17,32,0.06);text-decoration:none;font-weight:700">Explore Services</a>
+        </div>
+
+        <div class="grid" style="margin-top:20px">
+          <div class="card">
+            <h3>Drone Inspections</h3>
+            <div class="muted">High-resolution aerial imaging for asset inspection and condition assessment.</div>
+          </div>
+          <div class="card">
+            <h3>LiDAR & Mapping</h3>
+            <div class="muted">Accurate topographic and structural survey data using aerial LiDAR.</div>
+          </div>
+          <div class="card">
+            <h3>Training & Certification</h3>
+            <div class="muted">Pilot training courses for commercial operations and compliance.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hero-visual" aria-hidden="true"></div>
+    </section>
+
+    <!-- About -->
+    <section id="section-about" aria-labelledby="about-title">
+      <div class="section-header">
+        <h3 class="title" id="about-title">About Demo Aerospace</h3>
+      </div>
+
+      <div class="cols" style="margin-top:12px">
+        <div>
+          <p class="muted">
+            Demo Aerospace is a fictional demonstration of a modern aerial intelligence provider. Below you will find placeholder content for services, industries, training, and products inspired by common enterprise drone companies.
+          </p>
+
+          <h4 style="margin-top:18px">Mission & Values</h4>
+          <p class="muted">
+            Our mission is to deliver safe, reliable, and actionable aerial data to clients across industries.
+          </p>
+          <ul class="muted">
+            <li>Safety first</li>
+            <li>Quality and precision</li>
+            <li>Client focused</li>
+            <li>Inclusive and collaborative</li>
+          </ul>
+
+          <h4 style="margin-top:14px">Leadership</h4>
+          <p class="muted">A placeholder message from the CEO about growth, technology, and service excellence.</p>
+        </div>
+
+        <aside>
+          <div class="contact-card">
+            <strong>Quick contact</strong>
+            <div class="small muted" style="margin-top:6px">Call us</div>
+            <div style="font-weight:700;margin-top:6px">+1 (833) 865-2887</div>
+            <div class="small muted" style="margin-top:10px">Email</div>
+            <div style="font-weight:700">info@demoaerospace.example</div>
+            <div style="margin-top:12px" class="small muted">Address</div>
+            <div class="muted">Demo HQ • 123 Aviation Way, Demo City</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="section-services" aria-labelledby="services-title">
+      <div class="section-header">
+        <h3 class="title" id="services-title">Services</h3>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="card" id="inspections">
+          <h3>Drone Inspections</h3>
+          <p class="muted">Visual inspections with high-resolution cameras and automated flight plans. Typical use cases: powerline inspection, solar farm assessment, wind turbine checks, and rooftop surveys.</p>
+        </div>
+
+        <div class="card" id="lidar">
+          <h3>LiDAR Surveys</h3>
+          <p class="muted">Aerial LiDAR scanning produces accurate, densely sampled point clouds for topographic mapping, corridor surveys, and vegetation analysis.</p>
+        </div>
+
+        <div class="card" id="aviation">
+          <h3>Aviation & Surveillance</h3>
+          <p class="muted">Fixed-wing and multirotor operations for long-duration missions, monitoring, and situational awareness for public safety and defense use cases.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:18px" class="card">
+        <h3>Data Processing & Delivery</h3>
+        <p class="muted">Turnkey data processing pipelines: orthomosaics, point clouds, classified deliverables, and GIS-ready products. Secure delivery options and analytics dashboards available.</p>
+      </div>
+    </section>
+
+    <!-- Industries -->
+    <section id="section-industries" aria-labelledby="industries-title">
+      <div class="section-header">
+        <h3 class="title" id="industries-title">Industries We Serve</h3>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="card" id="energy">
+          <h3>Energy & Utilities</h3>
+          <p class="muted">Inspection and monitoring of power lines, substations, pipelines and renewable assets to improve safety and uptime.</p>
+        </div>
+
+        <div class="card" id="construction">
+          <h3>Construction & Infrastructure</h3>
+          <p class="muted">Progress monitoring, earthworks measurement, and site health monitoring using aerial imagery and LiDAR.</p>
+        </div>
+
+        <div class="card" id="public">
+          <h3>Public Safety & Emergency Services</h3>
+          <p class="muted">Rapid aerial assessment for incident response, search & rescue, and scene mapping.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="card" id="agri">
+          <h3>Agriculture</h3>
+          <p class="muted">Crop health mapping, NDVI analytics, and precision agriculture support.</p>
+        </div>
+
+        <div class="card">
+          <h3>Mining & Survey</h3>
+          <p class="muted">Stockpile measurement, volumetrics, and site safety monitoring.</p>
+        </div>
+
+        <div class="card">
+          <h3>Telecom & Utilities</h3>
+          <p class="muted">Tower inspections and right-of-way assessments to reduce maintenance costs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Training -->
+    <section id="section-training" aria-labelledby="training-title">
+      <div class="section-header">
+        <h3 class="title" id="training-title">Training & Certification</h3>
+      </div>
+
+      <div class="cols" style="margin-top:12px">
+        <div>
+          <p class="muted">Professional training programs for commercial drone pilots. Courses include operations theory, flight safety, regulations, and practical flight time. Available as classroom, onsite corporate, or online modules.</p>
+
+          <h4 style="margin-top:12px">Sample Courses</h4>
+          <ul class="muted">
+            <li>Intro to Commercial Drone Operations</li>
+            <li>Advanced Inspection Flight Planning</li>
+            <li>LiDAR Data Capture & Processing</li>
+            <li>Emergency Response and Aerial Mapping</li>
+          </ul>
+        </div>
+
+        <aside>
+          <div class="contact-card">
+            <strong>Enroll now</strong>
+            <p class="muted" style="margin-top:6px">Email <strong>training@demoaerospace.example</strong> to request course dates and pricing.</p>
+            <a class="cta" href="#contact" data-nav style="display:inline-block;margin-top:8px">Contact Training</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="section-products" aria-labelledby="products-title">
+      <div class="section-header">
+        <h3 class="title" id="products-title">Products & Equipment</h3>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <h3>Enterprise UAVs</h3>
+          <p class="muted">Rugged, high-end multirotor and fixed-wing platforms for long-range missions.</p>
+        </div>
+        <div class="card">
+          <h3>Payloads & Sensors</h3>
+          <p class="muted">High-resolution cameras, thermal imagers, and LiDAR systems for geospatial capture.</p>
+        </div>
+        <div class="card">
+          <h3>Software & Services</h3>
+          <p class="muted">Flight planning, data processing pipelines, and custom analytics dashboards.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="section-contact" aria-labelledby="contact-title">
+      <div class="section-header">
+        <h3 class="title" id="contact-title">Contact</h3>
+      </div>
+
+      <div class="cols" style="margin-top:12px">
+        <div>
+          <p class="muted">Use the form to send a demo message. This form is client-only and will not submit to a server in this demo. For live sites integrate an API endpoint or form handler of your choice.</p>
+
+          <div class="contact-card" style="margin-top:12px">
+            <form id="contactForm" onsubmit="return handleContact(event)">
+              <div style="display:flex;gap:8px;margin-bottom:8px">
+                <input type="text" name="name" placeholder="Full name" required />
+                <input type="email" name="email" placeholder="Email" required />
+              </div>
+              <div style="margin-bottom:8px">
+                <input type="text" name="company" placeholder="Company (optional)" />
+              </div>
+              <div style="margin-bottom:8px">
+                <select name="topic">
+                  <option value="">Select topic</option>
+                  <option>Request a quote</option>
+                  <option>Training enquiry</option>
+                  <option>Product enquiry</option>
+                </select>
+              </div>
+              <div style="margin-bottom:12px">
+                <textarea name="message" placeholder="Your message" required></textarea>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="primary" type="submit">Send message</button>
+                <div id="formHint" class="small muted" aria-live="polite"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <aside>
+          <div class="contact-card">
+            <strong>Office</strong>
+            <div class="small muted" style="margin-top:6px">Phone</div>
+            <div style="font-weight:700">+1 (833) 865-2887</div>
+            <div class="small muted" style="margin-top:8px">Email</div>
+            <div style="font-weight:700">info@demoaerospace.example</div>
+            <div style="margin-top:8px" class="small muted">Address</div>
+            <div class="muted">Demo HQ • 123 Aviation Way, Demo City</div>
+
+            <div style="margin-top:12px">
+              <strong>Social</strong>
+              <div class="socials">
+                <a href="#" title="LinkedIn (placeholder)" aria-label="LinkedIn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.24 24h4.5V7.75h-4.5V24zM8.75 7.75h4.32v2.2h.06c.6-1.13 2.06-2.32 4.25-2.32 4.55 0 5.39 2.99 5.39 6.87V24h-4.5v-7.3c0-1.74-.03-3.98-2.42-3.98-2.42 0-2.79 1.9-2.79 3.86V24h-4.5V7.75z" fill="currentColor"/></svg>
+                </a>
+                <a href="#" title="Twitter (placeholder)" aria-label="Twitter">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 7.5c-.6.3-1.2.5-1.9.6.7-.5 1.2-1.3 1.4-2.2-.7.4-1.5.6-2.4.8-.7-.7-1.7-1.1-2.8-1.1-2.1 0-3.8 1.8-3.8 3.9 0 .3 0 .6.1.9C8 10.5 5.6 9 4 7c-.3.6-.4 1.2-.4 2 0 1.4.7 2.6 1.8 3.3-.6 0-1.2-.2-1.7-.5v.1c0 1.9 1.3 3.4 3.1 3.7-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.4 1.6 2.4 3.1 2.4-1.1.9-2.5 1.5-4 1.5-.3 0-.6 0-.9-.1 1.6 1.1 3.4 1.8 5.4 1.8 6.5 0 10-5.5 10-10.2v-.5c.6-.4 1.2-1 1.6-1.6-.6.3-1.3.5-2 .6z" fill="currentColor"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Extra: quick recent locations sample (placeholder) -->
+    <section aria-labelledby="data-title">
+      <div class="section-header">
+        <h3 class="title" id="data-title">Live tracking (placeholder)</h3>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <p class="muted">This demo includes a placeholder for a live vehicle list. In a production site, this area would connect to your tracking API (for example the /api/vehicles endpoint) and display latest positions on a map or stream updates in real time.</p>
+
+        <div id="vehiclesList" style="margin-top:12px" class="muted">
+          <!-- Demo items injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-inner wrap" style="padding:18px 0 36px 0">
+        <div class="footer-col" style="max-width:420px">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="logo" style="width:48px;height:48px;">DA</div>
+            <div>
+              <div style="font-weight:700">Demo Aerospace</div>
+              <div class="small muted">Aerial intelligence & services</div>
+            </div>
+          </div>
+
+          <p class="small muted" style="margin-top:12px">This is a static demo for prototyping. Replace placeholder content with your company copy, images, and production endpoints to go live.</p>
+        </div>
+
+        <div class="footer-col">
+          <strong>Quick links</strong>
+          <div style="display:flex;flex-direction:column;margin-top:8px">
+            <a href="#home" data-nav class="small muted">Home</a>
+            <a href="#services" data-nav class="small muted">Services</a>
+            <a href="#industries" data-nav class="small muted">Industries</a>
+            <a href="#training" data-nav class="small muted">Training</a>
+            <a href="#products" data-nav class="small muted">Products</a>
+            <a href="#contact" data-nav class="small muted">Contact</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <strong>Contact</strong>
+          <div class="small muted" style="margin-top:8px">Phone</div>
+          <div style="font-weight:700">+1 (833) 865-2887</div>
+          <div class="small muted" style="margin-top:8px">Email</div>
+          <div style="font-weight:700">info@demoaerospace.example</div>
+
+          <div class="small muted" style="margin-top:12px">© <span id="year"></span> Demo Aerospace. All rights reserved.</div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Simple SPA-ish navigation (smooth scroll) and dropdown handling
+    document.addEventListener('DOMContentLoaded', function () {
+      // set year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // smooth scroll for links with data-nav
+      document.querySelectorAll('[data-nav]').forEach(function (el) {
+        el.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          let href = el.getAttribute('href') || el.dataset.href || '#home';
+          if (href.startsWith('#')) {
+            const id = href === '#' ? 'home' : href.replace(/^#/, '');
+            const target = document.getElementById('section-' + id) || document.getElementById(id) || document.getElementById('home');
+            if (target) {
+              target.scrollIntoView({behavior:'smooth', block:'start'});
+              // close mobile menu if open
+              closeMobile();
+            }
+          } else {
+            // external link fallback
+            window.location.href = href;
+          }
+        });
+      });
+
+      // Build dropdown toggles
+      document.querySelectorAll('.dropdown').forEach(function(drop){
+        const toggle = drop.querySelector('.drop-toggle');
+        const menu = drop.querySelector('.dropdown-menu');
+        if (!toggle || !menu) return;
+        toggle.addEventListener('click', function(e){
+          const isOpen = menu.style.display === 'flex';
+          closeAllDropdowns();
+          menu.style.display = isOpen ? 'none' : 'flex';
+          menu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+        });
+        // close on outside click
+        document.addEventListener('click', function(ev){
+          if (!drop.contains(ev.target)) {
+            menu.style.display = 'none';
+            menu.setAttribute('aria-hidden', 'true');
+          }
+        });
+      });
+
+      function closeAllDropdowns(){
+        document.querySelectorAll('.dropdown-menu').forEach(m => { m.style.display = 'none'; m.setAttribute('aria-hidden', 'true')});
+      }
+
+      // Mobile menu
+      const mobileMenu = document.getElementById('mobileMenu');
+      const burgerBtn = document.getElementById('burgerBtn');
+      const mobileClose = document.getElementById('mobileClose');
+
+      function openMobile(){ mobileMenu.style.display = 'block'; mobileMenu.setAttribute('aria-hidden','false'); }
+      function closeMobile(){ mobileMenu.style.display = 'none'; mobileMenu.setAttribute('aria-hidden','true'); }
+      burgerBtn.addEventListener('click', openMobile);
+      mobileClose.addEventListener('click', closeMobile);
+      mobileMenu.addEventListener('click', function(e){ if (e.target === mobileMenu) closeMobile(); });
+
+      // keyboard escape closes mobile menu and dropdowns
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') { closeMobile(); closeAllDropdowns();}
+      });
+
+      // Demo vehicles list (placeholder)
+      const vehicles = [
+        { device_id: 'bus-01', latitude: 43.6629, longitude: -79.3957, status: 'active', last_seen: '2025-11-22T14:08:00Z' },
+        { device_id: 'bus-02', latitude: 43.6650, longitude: -79.3980, status: 'idle', last_seen: '2025-11-22T13:59:20Z' },
+        { device_id: 'drone-01', latitude: 43.6601, longitude: -79.4005, status: 'in-flight', last_seen: '2025-11-22T14:10:41Z' }
+      ];
+      const list = document.getElementById('vehiclesList');
+      vehicles.forEach(v => {
+        const el = document.createElement('div');
+        el.style.padding='8px';
+        el.style.borderBottom='1px dashed rgba(11,17,32,0.04)';
+        el.innerHTML = '<strong>'+v.device_id+'</strong> — <span class="small muted">'+v.status+'</span><div class="small muted">Last: '+v.last_seen+' • '+v.latitude+','+v.longitude+'</div>';
+        list.appendChild(el);
+      });
+
+      // Contact form local handler
+      window.handleContact = function(e){
+        e.preventDefault();
+        const form = e.target;
+        const hint = document.getElementById('formHint');
+        const data = new FormData(form);
+        const payload = {};
+        data.forEach((v,k)=>payload[k]=v);
+        // This is a demo: we echo the data to the user instead of sending to server.
+        hint.textContent = 'Message prepared. (Demo only — not sent)';
+
+        // show a little summary toast
+        setTimeout(()=>{ hint.textContent = 'Thanks, ' + (payload.name || 'there') + '. We will contact you.' }, 700);
+
+        console.log('Contact form (demo):', payload);
+        form.reset();
+        return false;
+      };
+
+      // Small accessibility: focus outline when using keyboard navigation
+      document.body.addEventListener('keyup', function(e){
+        if (e.key === 'Tab') document.body.classList.add('show-focus');
+      });
+
+    });
+  </script>
+
+</body>
+</html>
